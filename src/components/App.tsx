@@ -20,7 +20,7 @@ function App() {
     ).then((res) => {
       res.json().then((data) => {
         let movies = data.results.map((movie: any) => formatMovie(movie));
-        console.log(data.results);
+        console.log("Data.Results", data.results);
         setMovies(movies);
       });
     });

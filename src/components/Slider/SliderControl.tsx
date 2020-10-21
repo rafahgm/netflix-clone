@@ -1,8 +1,10 @@
 import React from "react";
 
-import Icon from "@iconify/react";
-import chevronLeft from "@iconify/react";
-import chevronRight from "@iconify/react";
+import { Icon } from "@iconify/react";
+import chevronLeft from "@iconify/icons-mdi/chevron-left";
+import chevronRight from "@iconify/icons-mdi/chevron-right";
+
+import "../style/Slider/SliderControl.scss";
 
 type SliderControlProps = {
   arrowDirection: string;

@@ -1,0 +1,23 @@
+.slider-control {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 4%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 3rem;
+  cursor: pointer;
+  color: #fff;
+  z-index: 10;
+
+  &.right {
+    right: 0;
+  }
+
+  &.left {
+    left: 0;
+  }
+}
