@@ -15,8 +15,8 @@ const SliderControl: React.FC<SliderControlProps> = ({
   onClick,
 }: SliderControlProps) => {
   return (
-    <div className={`slider-control ${arrowDirection}`}>
-      <div className="slider-control-arrow" onClick={onClick}>
+    <div className={`slider-control ${arrowDirection}`} onClick={onClick}>
+      <div className="slider-control-arrow">
         <Icon icon={arrowDirection === "right" ? chevronRight : chevronLeft} />
       </div>
     </div>
