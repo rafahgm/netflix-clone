@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../style/App.css";
+import "./style/App.scss";
 import { tmdbKey } from "../util/tmdb.apikey";
 import Slider from "./Slider/Slider";
 

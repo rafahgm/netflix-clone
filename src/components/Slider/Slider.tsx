@@ -25,10 +25,15 @@ const Slider: React.FC<SliderProps> = ({ movies }: SliderProps) => {
     return sliderContent;
   };
 
+  const handleClick = () => {};
+
   return (
     <div className="slider">
-      <SliderControl></SliderControl>
+      {hasMoved && (
+        <SliderControl arrowDirection="left" onClick={handleClick} />
+      )}
       <div className="slider-content">{renderContent()}</div>
+      <SliderControl arrowDirection="right" onClick={handleClick} />
     </div>
   );
 };
