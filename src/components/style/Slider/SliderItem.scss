@@ -1,23 +1,30 @@
 .slider-item {
   padding: 0 4px;
   display: inline-block;
+  position: relative;
 
   &-image {
-    width: 100%;
-    height: 100%;
-  }
-
-  &:first-of-type {
-    padding-left: 0px;
-  }
-
-  &:last-of-type {
-    padding-right: 0px;
-  }
-
-  img {
     display: block;
     width: 100%;
     max-width: 100%;
+  }
+  &-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    background-color: #000000aa;
+
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      font-size: 2rem;
+    }
   }
 }
