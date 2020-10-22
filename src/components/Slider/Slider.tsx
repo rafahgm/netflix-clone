@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+//TODO: Fix array so it can display lengths that are not multiples of showSize, maybe temporaly copy first items to end of array
+
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import SliderItem from "./SilderItem";
 import SliderControl from "./SliderControl";
-import useWindowDimensions from "../../util/windowDimensions";
+import { shiftLeft, shiftRight } from "../../util/arrays";
+import { tmdbKey } from "../../util/tmdb.apikey";
 
 import "../style/Slider/Slider.scss";
+import { isTemplateExpression } from "typescript";
 
 type SliderProps = {
   movies: Movie[];
@@ -16,75 +21,61 @@ type SliderState = {
   movePercentage: number;
   leftIndex: number;
   showSize: number;
+  indexes: number[];
+  itemWidth: number;
+  movies: Movie[];
 };
 
-const Slider: React.FC<SliderProps> = ({ movies }: SliderProps) => {
+function Slider() {
   const [state, setState] = useState<SliderState>({
     hasMoved: false,
     moveDirection: "",
     isMoving: false,
     movePercentage: 0,
     leftIndex: 0,
-    showSize: 4,
+    showSize: 7,
+    indexes: [],
+    itemWidth: 0,
+    movies: [],
   });
 
-  const windowDimensions = useWindowDimensions();
-
-  const updateState = (newState: any) => {
+  function updateState(newState: any) {
     setState({ ...state, ...newState });
-  };
+  }
 
-  if (!movies.length) return null;
-
-  let totalItems = movies.length;
-
-  const renderContent = () => {
-    console.log("Render");
-
-    const left: number[] = [];
-    const center: number[] = [];
-    const right: number[] = [];
-
-    let hasMoved = state.hasMoved;
-    let leftIndex = state.leftIndex;
-    let showSize = state.showSize;
-
-    for (let i = 0; i < showSize; i++) {
-      //left
-      if (hasMoved) {
-        if (leftIndex === 0) {
-          left.push(showSize * 2 + i);
-        }
-        left.push(leftIndex - showSize + i);
-      }
-
-      // TODO: Resolver probelema de quando o número de itens não for multiplo do número de itens na tela
-      //center
-      center.push(leftIndex + i);
-
-      //right
-      console.log(leftIndex + showSize);
-      if (leftIndex + showSize >= totalItems) {
-        right.push(i);
-      } else {
-        right.push(leftIndex + showSize + i);
-      }
+  useEffect(function () {
+    function formatMovie(movie: any): Movie {
+      return {
+        id: movie.id,
+        title: movie.title,
+        backdrop_path: movie.backdrop_path,
+      };
     }
 
-    console.log("Left", left);
-    console.log("Center", center);
-    console.log("Right", right);
+    axios
+      .get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${tmdbKey}`)
+      .then((response) => {
+        let result = response.data.results;
+        result = result.map((movie: any) => formatMovie(movie));
+        let indexes: number[] = [];
+        result.forEach((movie: any, index: number) => {
+          indexes.push(index);
+        });
+        let itemWidth = window.innerWidth / (state.showSize + 1);
+        updateState({ movies: result, indexes: indexes, itemWidth: itemWidth });
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-    const combinedIndex: number[] = [...left, ...center, ...right];
-
+  const renderContent = () => {
     const sliderContent = [];
 
-    for (let index of combinedIndex) {
+    for (let index of state.indexes) {
       sliderContent.push(
         <SliderItem
           key={index}
-          movie={movies[index]}
-          width={100 / state.showSize}
+          movie={state.movies[index]}
+          width={state.itemWidth}
           text={index.toString()}
         />
       );
@@ -94,20 +85,86 @@ const Slider: React.FC<SliderProps> = ({ movies }: SliderProps) => {
   };
 
   const handleNext = () => {
-    updateState({
-      leftIndex: state.leftIndex + state.showSize,
-      hasMoved: true,
-    });
+    if (state.hasMoved) {
+      updateState({
+        isMoving: true,
+        moveDirection: "right",
+      });
+
+      setTimeout(() => {
+        updateState({
+          indexes: shiftLeft(state.indexes, state.showSize),
+          isMoving: false,
+          hasMoved: true,
+        });
+      }, 750);
+    } else {
+      updateState({
+        isMoving: true,
+        moveDirection: "right",
+      });
+
+      setTimeout(() => {
+        updateState({
+          isMoving: false,
+          hasMoved: true,
+        });
+      }, 750);
+    }
   };
 
-  const handlePrev = () => {};
+  const handlePrev = () => {
+    updateState({
+      // indexes: shiftRight(state.indexes, state.showSize),
+      isMoving: true,
+      moveDirection: "left",
+    });
 
-  let style: React.CSSProperties = {};
+    setTimeout(() => {
+      updateState({
+        indexes: shiftRight(state.indexes, state.showSize),
+        isMoving: false,
+      });
+    }, 750);
+  };
 
+  let style: React.CSSProperties = {
+    marginLeft: `${state.itemWidth / 2}px`,
+  };
   if (state.hasMoved) {
     style = {
-      transform: `translateX(-${window.innerWidth}px)`,
+      transform: `translateX(-${
+        state.showSize * state.itemWidth - state.itemWidth / 2
+      }px)`,
     };
+  }
+  if (state.isMoving) {
+    // After first click to next
+    if (state.hasMoved) {
+      let translate = "";
+      if (state.moveDirection === "right") {
+        translate = `translateX(-${
+          state.showSize * state.itemWidth * 2 - state.itemWidth / 2
+        }px)`;
+      }
+      style = {
+        transform: translate,
+        transition: "all 750ms ease-in-out",
+      };
+    } else {
+      // Before clicking to next
+      // i.e. there still is a margin to the left
+      let translate = "";
+      if (state.moveDirection === "right") {
+        translate = `translateX(-${
+          state.showSize * state.itemWidth - state.itemWidth / 2
+        }px)`;
+      }
+      style = {
+        transform: translate,
+        transition: "all 750ms ease-in-out",
+      };
+    }
   }
 
   return (
@@ -121,6 +178,6 @@ const Slider: React.FC<SliderProps> = ({ movies }: SliderProps) => {
       <SliderControl arrowDirection="right" onClick={handleNext} />
     </div>
   );
-};
+}
 
 export default Slider;

@@ -14,7 +14,7 @@ const SliderItem: React.FC<SliderItemProps> = ({
   text,
 }: SliderItemProps) => {
   return (
-    <div className="slider-item" style={{ width: `${width}%` }}>
+    <div className="slider-item" style={{ width: `${width}px` }}>
       <div className="slider-item-overlay">
         <span>{text}</span>
       </div>
