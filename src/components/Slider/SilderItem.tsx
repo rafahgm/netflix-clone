@@ -1,6 +1,7 @@
 import React from "react";
 
 import "../style/Slider/SliderItem.scss";
+import SliderItemControls from "./SliderItemControls";
 
 type SliderItemProps = {
   movie: Movie;
@@ -23,6 +24,7 @@ const SliderItem: React.FC<SliderItemProps> = ({
         src={`http://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
         alt={movie.title}
       />
+      <SliderItemControls movie={movie} />
     </div>
   );
 };
