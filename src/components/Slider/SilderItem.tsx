@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "../style/Slider/SliderItem.scss";
 import SliderItemControls from "./SliderItemControls";
@@ -9,13 +9,53 @@ type SliderItemProps = {
   text: string;
 };
 
-const SliderItem: React.FC<SliderItemProps> = ({
-  movie,
-  width,
-  text,
-}: SliderItemProps) => {
+export default function SliderItem({ movie, width, text }: SliderItemProps) {
+  const [isHovered, setHovered] = useState(false);
+  const [isAbove, setAbove] = useState(false);
+  let hoverTimeout: NodeJS.Timeout;
+  let controlsStyle: React.CSSProperties = {
+    transition: "all 300ms ease-in-out",
+    opacity: "0",
+  };
+  let itemStyle: React.CSSProperties = {};
+  function handleMouseEnter() {
+    hoverTimeout = setTimeout(() => {
+      setHovered(true);
+      setAbove(true);
+    }, 750);
+  }
+  function handleMouseLeave() {
+    clearTimeout(hoverTimeout);
+    setHovered(false);
+    setTimeout(() => {
+      setAbove(false);
+    }, 750);
+  }
+
+  if (isHovered) {
+    itemStyle = {
+      transform: "scale(1.5)",
+    };
+    controlsStyle = {
+      ...controlsStyle,
+      opacity: "1",
+    };
+  }
+
+  if (isAbove) {
+    itemStyle = {
+      ...itemStyle,
+      zIndex: 10,
+    };
+  }
+
   return (
-    <div className="slider-item" style={{ width: `${width}px` }}>
+    <div
+      className="slider-item"
+      style={{ ...itemStyle, width: `${width}px` }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="slider-item-overlay">
         <span>{text}</span>
       </div>
@@ -24,9 +64,9 @@ const SliderItem: React.FC<SliderItemProps> = ({
         src={`http://image.tmdb.org/t/p/w780${movie.backdrop_path}`}
         alt={movie.title}
       />
-      <SliderItemControls movie={movie} />
+      <div style={controlsStyle}>
+        <SliderItemControls movie={movie} />
+      </div>
     </div>
   );
-};
-
-export default SliderItem;
+}

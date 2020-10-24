@@ -21,6 +21,11 @@ type SliderItemControlsProps = {
 };
 
 export default function SliderItemControls({ movie }: SliderItemControlsProps) {
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    setRating(Math.floor(Math.random() * 4));
+  }, []);
   return (
     <div className="sic">
       <div className="sic-buttons">
@@ -42,7 +47,7 @@ export default function SliderItemControls({ movie }: SliderItemControlsProps) {
       </div>
       <div className="sic-info">
         <span>{`${movie.vote_average * 10}% Match`}</span>
-        <img src={ratings[Math.floor(Math.random() * 4)]} alt="" />
+        <img src={ratings[rating]} alt="" />
         <span className="duration">
           {Math.floor(Math.random() * 3)}h&nbsp;
           {Math.floor(Math.random() * 60)}
