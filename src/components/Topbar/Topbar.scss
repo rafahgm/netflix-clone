@@ -1,5 +1,8 @@
 .topbar {
   display: flex;
+  z-index: 1;
+  position: fixed;
+  top: 0;
   flex-direction: row;
   align-items: center;
   height: 68px;
