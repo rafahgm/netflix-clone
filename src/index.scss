@@ -1,12 +1,12 @@
+@import "./normalize.scss";
+
 * {
-  user-select: none;
   box-sizing: border-box;
 }
 
 body,
-html {
-  font-family: sans-serif;
-  width: 100%;
+html,
+#root,
+.App {
   height: 100%;
-  overflow-x: hidden;
 }

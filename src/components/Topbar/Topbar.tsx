@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import logo from "../../assets/netflix-logo.svg";
 import Search from "./Search";
@@ -11,6 +11,12 @@ import giftOutline from "@iconify/icons-mdi/gift-outline";
 import "./Topbar.scss";
 
 export default function Topbar() {
+  // useEffect(() => {
+  //   console.log("useEffect Topbar");
+  //   window.addEventListener("scroll", () => {
+  //     alert("scroll");
+  //   });
+  // }, []);
   return (
     <div className="topbar">
       <img className="topbar-logo" src={logo} />

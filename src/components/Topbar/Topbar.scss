@@ -1,14 +1,14 @@
 .topbar {
   display: flex;
   z-index: 1;
-  position: fixed;
-  top: 0;
   flex-direction: row;
   align-items: center;
+  position: fixed;
   height: 68px;
   width: 100%;
   padding: 0 60px;
-
+  // background-color: red;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
   &-logo {
     width: 92px;
     height: auto;
