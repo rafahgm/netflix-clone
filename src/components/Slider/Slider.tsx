@@ -11,7 +11,7 @@ import "./Slider.scss";
 import { isTemplateExpression } from "typescript";
 
 type SliderProps = {
-  movies: Movie[];
+  title: string;
 };
 
 type SliderState = {
@@ -26,7 +26,7 @@ type SliderState = {
   movies: Movie[];
 };
 
-function Slider() {
+function Slider({ title }: SliderProps) {
   const [state, setState] = useState<SliderState>({
     hasMoved: false,
     moveDirection: "",
@@ -171,6 +171,7 @@ function Slider() {
 
   return (
     <div className="slider">
+      <span className="slider-title">{title}</span>
       {state.hasMoved && (
         <SliderControl arrowDirection="left" onClick={handlePrev} />
       )}
