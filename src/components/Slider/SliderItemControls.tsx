@@ -12,7 +12,7 @@ import rating18 from "../../assets/18.png";
 import rating16 from "../../assets/16.png";
 import rating14 from "../../assets/14.png";
 import rating12 from "../../assets/12.png";
-import "../style/Slider/SliderItemControls.scss";
+import "./SliderItemControls.scss";
 
 const ratings = [rating12, rating14, rating16, rating18];
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "../style/Slider/SliderItem.scss";
+import "./SliderItem.scss";
 import SliderItemControls from "./SliderItemControls";
 
 type SliderItemProps = {

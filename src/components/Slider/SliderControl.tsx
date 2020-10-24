@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 import chevronLeft from "@iconify/icons-mdi/chevron-left";
 import chevronRight from "@iconify/icons-mdi/chevron-right";
 
-import "../style/Slider/SliderControl.scss";
+import "./SliderControl.scss";
 
 type SliderControlProps = {
   arrowDirection: string;

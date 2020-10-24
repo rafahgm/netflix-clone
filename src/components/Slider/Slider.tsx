@@ -7,7 +7,7 @@ import SliderControl from "./SliderControl";
 import { shiftLeft, shiftRight } from "../../util/arrays";
 import { tmdbKey } from "../../util/tmdb.apikey";
 
-import "../style/Slider/Slider.scss";
+import "./Slider.scss";
 import { isTemplateExpression } from "typescript";
 
 type SliderProps = {
