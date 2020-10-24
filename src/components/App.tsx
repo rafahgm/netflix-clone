@@ -12,6 +12,9 @@ function App() {
     <div className="App">
       <Topbar />
       <Cover />
+      <Slider title="Watch It Again" />
+      <Slider title="Action & Adventure" />
+      <Footer />
     </div>
   );
 }
